@@ -75,30 +75,36 @@ export const useApi = create<Api>((set, get) => ({
     })
   },
   connect: async (peerId) => {
-    const peer = get().peer
-    if (!peer) return false
+    try {
+      const peer = get().peer
+      if (!peer) return false
 
-    const conn = peer.connect(peerId)
+      const conn = peer.connect(peerId)
 
-    conn.on('data', (data) => {
-      const newQuestions = handleData(data as QuestionData)
+      conn.on('data', (data) => {
+        const newQuestions = handleData(data as QuestionData)
 
-      set(({ questions: prev }) => ({
-        questions: [...prev, ...newQuestions],
-      }))
-    })
+        set(({ questions: prev }) => ({
+          questions: [...prev, ...newQuestions],
+        }))
+      })
 
-    const timeout = 30000
-    const isConnected = await Promise.race<boolean>([
-      new Promise((resolve) => conn.on('open', () => resolve(true))),
-      new Promise((_, reject) => setTimeout(() => reject(false), timeout)),
-    ])
+      const timeout = 3000
+      const isConnected = await Promise.race<boolean>([
+        new Promise((resolve) => conn.on('open', () => resolve(true))),
+        new Promise((resolve) => setTimeout(() => resolve(false), timeout)),
+      ])
 
-    if (isConnected) {
-      set({ isConnected: true, conn, mode: 'client' })
+      if (isConnected) {
+        set({ isConnected: true, conn, mode: 'client' })
+      } else {
+        conn.close()
+      }
+
+      return isConnected
+    } catch (error) {
+      return false
     }
-
-    return isConnected
   },
   send: async (question: string) => {
     const conn = get().conn
