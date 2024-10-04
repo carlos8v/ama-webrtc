@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react'
+
+import { Home } from './pages/Home'
+import { Room } from './pages/Room'
+
+import { useApi } from './store'
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+  const [connectedRoomId, setConnectedRoomId] = useState<string | undefined>(
+    undefined
   )
+  const { init, connect, roomId, isConnected } = useApi()
+
+  useEffect(() => {
+    init()
+  }, [])
+
+  async function handleConnectTo(connectToId: string) {
+    if (connectToId === roomId) return
+    const hasConnected = await connect(connectToId)
+
+    if (hasConnected) {
+      setConnectedRoomId(connectToId)
+    }
+  }
+
+  if (isConnected) {
+    return <Room roomId={connectedRoomId ?? roomId} />
+  }
+
+  return <Home handleConnectTo={handleConnectTo} />
 }
 
 export default App
