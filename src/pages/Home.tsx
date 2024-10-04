@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Toaster, toast } from 'sonner'
 import { Share } from 'react-feather'
 
 import { useApi } from '../store'
@@ -15,6 +16,10 @@ export const Home = ({ handleConnectTo }: HomeProps) => {
 
   function handleShare() {
     if (!roomId) return
+    toast('Código de sala copiado', {
+      duration: 3000,
+      position: 'bottom-center',
+    })
     navigator.clipboard.writeText(roomId)
   }
 
@@ -36,6 +41,11 @@ export const Home = ({ handleConnectTo }: HomeProps) => {
 
   return (
     <main className="min-h-screen w-full h-full flex flex-col items-center pt-40 md:pt-0 md:justify-center">
+      <Toaster
+        toastOptions={{
+          className: 'border border-zinc-700 bg-zinc-800 text-white',
+        }}
+      />
       <p className="text-sm text-zinc-400">Código da sala:</p>
       <span className="max-w-xs md:max-w-lg rounded px-3 py-2 text-white break-all text-center font-medium text-xl flex items-center">
         {roomId ? (

@@ -1,3 +1,4 @@
+import { Toaster, toast } from 'sonner'
 import { Share } from 'react-feather'
 
 import { Question } from '../components/Question'
@@ -17,10 +18,19 @@ export const Room = ({ roomId }: RoomProps) => {
   function handleShare() {
     if (!roomId) return
     navigator.clipboard.writeText(roomId)
+    toast('Código de sala copiado', {
+      duration: 3000,
+      position: 'bottom-center',
+    })
   }
 
   return (
     <main className="min-h-screen w-full h-full flex flex-col items-center px-4 py-8">
+      <Toaster
+        toastOptions={{
+          className: 'border border-zinc-700 bg-zinc-800 text-white',
+        }}
+      />
       <section className="w-full max-w-4xl mx-auto">
         <div>
           <p className="mb-8">
