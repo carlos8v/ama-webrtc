@@ -16,7 +16,7 @@ export const Question = () => {
   if (mode !== 'client') return null
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col my-4 gap-4">
+    <form onSubmit={handleSubmit} className="flex my-4 gap-4">
       <input
         required
         type="text"
@@ -27,7 +27,7 @@ export const Question = () => {
       />
       <button
         type="submit"
-        className="w-44 bg-amber-500 border border-amber-500 rounded px-4 py-2 font-medium text-sm self-end"
+        className="w-44 bg-amber-500 border border-amber-500 rounded px-4 py-2 font-medium text-base self-end"
       >
         Enviar
       </button>

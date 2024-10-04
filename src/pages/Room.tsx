@@ -10,6 +10,7 @@ export type RoomProps = {
 }
 
 export const Room = ({ roomId }: RoomProps) => {
+  const mode = useApi((api) => api.mode)
   const questions = useApi((api) => api.questions)
   const toggleAnswered = useApi((api) => api.toggleAnswered)
 
@@ -54,16 +55,18 @@ export const Room = ({ roomId }: RoomProps) => {
                   >
                     {idx + 1}. {question}
                   </span>
-                  <button
-                    className={classnames({
-                      'mt-1.5 transition inline-block w-fit text-sm': true,
-                      'text-amber-500': answered,
-                      'text-zinc-600 hover:text-amber-500': !answered,
-                    })}
-                    onClick={() => toggleAnswered(idx)}
-                  >
-                    Marcar como respondido
-                  </button>
+                  {mode === 'server' ? (
+                    <button
+                      className={classnames({
+                        'mt-1.5 transition inline-block w-fit text-sm': true,
+                        'text-amber-500': answered,
+                        'text-zinc-600 hover:text-amber-500': !answered,
+                      })}
+                      onClick={() => toggleAnswered(idx)}
+                    >
+                      Marcar como respondido
+                    </button>
+                  ) : null}
                 </div>
               </li>
             ))}
