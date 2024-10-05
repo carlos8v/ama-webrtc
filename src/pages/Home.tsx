@@ -84,10 +84,13 @@ export const Home = ({ setConnectedRoomId }: HomeProps) => {
         {roomId ? (
           <>
             <span>{roomId}</span>
-            <Share
+            <button
+              type="button"
               onClick={handleShare}
-              className="hidden md:block w-4 h-4 ml-2 font-medium text-zinc-400 transition hover:text-white cursor-pointer"
-            />
+              className="p-2 inline-flex items-center justify-center group"
+            >
+              <Share className="hidden md:block w-4 h-4 font-medium text-zinc-400 transition group-hover:text-white cursor-pointer" />
+            </button>
           </>
         ) : (
           'Carregando...'
@@ -109,14 +112,15 @@ export const Home = ({ setConnectedRoomId }: HomeProps) => {
         <hr className="w-full border-zinc-700" />
       </div>
       <form
-        className="w-full px-8 flex flex-col md:max-w-lg md:flex-row items-baseline gap-4"
+        className="w-full px-8 flex flex-col md:max-w-lg md:flex-row gap-4"
         onSubmit={handleSubmit(handleConnect)}
       >
-        <div>
+        <div className="w-full">
           <input
             {...register('roomId')}
             required
             type="text"
+            autoComplete="off"
             onChange={handleValue}
             maxLength={36}
             disabled={connectToRoom.isPending}
@@ -137,14 +141,14 @@ export const Home = ({ setConnectedRoomId }: HomeProps) => {
           type="submit"
           disabled={!roomId || connectToRoom.isPending}
           className={classnames({
-            'w-full md:w-48 bg-amber-500 border border-amber-500 bg-amber-500 rounded px-4 py-2 font-medium text-base':
+            'w-full h-fit md:w-48 bg-amber-500 border border-amber-500 bg-amber-500 rounded px-4 py-2 font-medium text-base flex items-center justify-center':
               true,
             'brightness-50 cursor-not-allowed': !roomId,
             'cursor-not-allowed	': connectToRoom.isPending,
           })}
         >
           {roomId && !connectToRoom.isPending ? (
-            'Conectar-se'
+            <span>Conectar-se</span>
           ) : (
             <>
               <RefreshCw className="inline-block animate-spin w-4 h-4 mr-2" />

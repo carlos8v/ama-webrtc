@@ -89,7 +89,7 @@ export const useApi = create<Api>((set, get) => ({
         }))
       })
 
-      const timeout = 3000
+      const timeout = 10000
       const isConnected = await Promise.race<boolean>([
         new Promise((resolve) => conn.on('open', () => resolve(true))),
         new Promise((resolve) => setTimeout(() => resolve(false), timeout)),

@@ -36,14 +36,17 @@ export const Room = ({ roomId }: RoomProps) => {
           <p className="mb-8">
             <span className="text-sm text-zinc-400 mr-2">Código da sala:</span>
             {roomId ? (
-              <span className="block mt-1 md:mt-0 md:inline-block">
+              <span className="block mt-1 md:mt-0 md:inline-flex items-center">
                 <span className="text-sm rounded font-medium bg-zinc-800 px-2 py-1.5">
                   {roomId}
                 </span>
-                <Share
+                <button
+                  type="button"
                   onClick={handleShare}
-                  className="inline-block w-4 h-4 ml-2 font-medium text-zinc-400 transition hover:text-white cursor-pointer"
-                />
+                  className="p-2 inline-flex items-center justify-center group"
+                >
+                  <Share className="inline-block w-4 h-4 font-medium text-zinc-400 transition group-hover:text-white cursor-pointer" />
+                </button>
               </span>
             ) : null}
           </p>
